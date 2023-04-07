@@ -101,7 +101,7 @@ chmod +x /opt/etc/init.d/S99Unblock
 Список берем из репо [Herrbischoff](https://github.com/herrbischoff/country-ip-blocks)
 
 ```
-wget -O/opt/etc/ru.cidr https://github.com/herrbischoff/country-ip-blocks/raw/ma
+wget -O/opt/etc/ru.cidr https://github.com/herrbischoff/country-ip-blocks/raw/ma  
 ster/ipv4/ru.cidr --no-check-certificate
 ```
 
