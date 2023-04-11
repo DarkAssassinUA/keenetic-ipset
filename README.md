@@ -65,8 +65,6 @@ done < $file
 
 ip rule add fwmark $fwmark table $table
 ip route add default dev $device table $table
-iptables -w -t mangle -A PREROUTING ! -s $guest -m conntrack --ctstate NEW -m set --match-set $ipset dst -j CONNMARK --set-mark $fwmark
-iptables -w -t mangle -A PREROUTING ! -s $guest -m set --match-set $ipset dst -j CONNMARK --restore-mark
 
 echo Done
 ```
@@ -104,6 +102,36 @@ chmod +x /opt/etc/init.d/S99Unblock
 wget -O/opt/etc/ru.cidr https://github.com/herrbischoff/country-ip-blocks/raw/master/ipv4/ru.cidr --no-check-certificate  
 ```
 
+Теперь настроим роутер что бы он не удалял наши правила.Для этого даем в консоль 
+
+```
+nano /etc/ndm/netfilter.d/100-fwmark.sh
+```
+и копируем сюда текст
+
+```
+#!/bin/sh
+
+ipset=vpn
+fwmark=1
+guest=192.168.2.0/24 #указываем диапазон гостевой подсети
+
+[ "$type" == "ip6tables" ] && exit 0
+[ "$table" != "mangle" ] && exit 0
+
+if [ -z "$(iptables-save | grep $ipset)" ]; then
+  iptables -w -t mangle -A PREROUTING ! -s $guest -m conntrack --ctstate NEW -m set --match-set $ipset dst -j CONNMARK --set-mark $fwmark
+  iptables -w -t mangle -A PREROUTING ! -s $guest -m set --match-set $ipset dst -j CONNMARK --restore-mark
+fi
+
+exit 0
+```
+Сохраняем,закрываем.Не забываем про 
+
+```
+chmod +x /etc/ndm/netfilter.d/100-fwmark.sh
+```
+
 Процесс настройки закончен.
 Даем команду 
 ```
@@ -111,5 +139,6 @@ wget -O/opt/etc/ru.cidr https://github.com/herrbischoff/country-ip-blocks/raw/ma
 ```
 и ждем какое-то количество времени.На Keenetic Viva 1910 процесс занимает около минуты.Если процесс успешно завершен - увидим Done.
 Если же скрипт завершится с ошибкой - перепроверьте не была ли допущена где-то ошибка у вас.
+После ребута роутера не нужно запускать задание вручную,все поднимется само.
 
 
