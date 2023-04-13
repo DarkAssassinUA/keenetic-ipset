@@ -99,13 +99,13 @@ chmod +x /opt/etc/init.d/S99Unblock
 Список берем из репо [Herrbischoff](https://github.com/herrbischoff/country-ip-blocks)
 
 ```
-wget -O/opt/etc/ru.cidr https://github.com/herrbischoff/country-ip-blocks/raw/master/ipv4/ru.cidr --no-check-certificate  
+wget -O /opt/etc/ru.cidr https://github.com/herrbischoff/country-ip-blocks/raw/master/ipv4/ru.cidr --no-check-certificate  
 ```
 
 Теперь настроим роутер что бы он не удалял наши правила.Для этого даем в консоль 
 
 ```
-nano /etc/ndm/netfilter.d/100-fwmark.sh
+nano /opt/etc/ndm/netfilter.d/100-fwmark.sh
 ```
 и копируем сюда текст
 
@@ -129,7 +129,7 @@ exit 0
 Сохраняем,закрываем.Не забываем про 
 
 ```
-chmod +x /etc/ndm/netfilter.d/100-fwmark.sh
+chmod +x /opt/etc/ndm/netfilter.d/100-fwmark.sh
 ```
 
 Процесс настройки закончен.
