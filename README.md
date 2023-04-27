@@ -164,7 +164,7 @@ chmod +x /opt/etc/ndm/netfilter.d/100-fwmark.sh
 **ip: RTNETLINK answers: Network is down** - выбран неправильный/отключенный интерфейс ВПН.Проверьте правильность имени вашего интерфейса.
 
 
-Автор гайда - [Le Maxime](t.me/mmudryi)
+Автор гайда - [Le Maxime] t.me/mmudryi
 
 Автор метода - [Bogdan]
 
